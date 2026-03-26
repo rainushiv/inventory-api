@@ -3,20 +3,21 @@ from fastapi import APIRouter
 router = APIRouter()
 
 
-@router.get("/product", tags=["product"])
-async def get_products():
-    return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
-
-@router.post("/product", tags=["product"])
-async def add_product():
-    return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
-
-@router.put("/product", tags=["product"])
-async def edit_product():
+@router.get("/item", tags=["item"])
+async def get_item():
     return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
 
 
-@router.delete("/product", tags=["product"])
-async def delete_product():
+@router.post("/item", tags=["item"])
+async def add_item():
+    return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
+
+@router.put("/item", tags=["item"])
+async def edit_item():
+    return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
+
+
+@router.delete("/item", tags=["item"])
+async def delete_item():
     return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
 
