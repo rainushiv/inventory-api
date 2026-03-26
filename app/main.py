@@ -4,7 +4,6 @@ from routers import unit
 from routers import item 
 from routers import model
 from contextlib import asynccontextmanager
-from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
 import asyncpg
@@ -22,11 +21,12 @@ async def lifespan(app: FastAPI):
     )
     yield
 
-    await app.state.poop.close()
+    await app.state.pool.close()
 
 
 app = FastAPI(
-    title="InventoryBackend"
+    title="InventoryBackend",
+    lifespan=lifespan
 )
 
 app.include_router(product.router)
@@ -36,4 +36,11 @@ app.include_router(unit.router)
 
 @app.get("/")
 async def root():
+    
     return {"message": "Hello World"}
+
+@app.get("/health")
+async def health():
+    async with app.state.pool.acquire() as conn:
+        result = await conn.fetchval("SELECT 1")
+    return {"db_connected": result == 1}
