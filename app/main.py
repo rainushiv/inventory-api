@@ -5,24 +5,11 @@ from routers import item
 from routers import model
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
+from app.db import lifespan
 import os
 import asyncpg
 
 load_dotenv()
-
-@asynccontextmanager 
-async def lifespan(app: FastAPI):
-    app.state.pool = await asyncpg.create_pool(
-        host= os.getenv("DB_HOST"), 
-        port= int(os.getenv("DB_PORT")),
-        user= os.getenv("DB_USER"),
-        password= os.getenv("DB_PASSWORD"),
-        database= os.getenv("DB_NAME")
-    )
-    yield
-
-    await app.state.pool.close()
-
 
 app = FastAPI(
     title="InventoryBackend",

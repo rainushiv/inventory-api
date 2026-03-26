@@ -1,1 +1,8 @@
+# Python
 .env
+.venv
+/venv
+project-practices-guide.md
+
+# OS
+.DS_Store
