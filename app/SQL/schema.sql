@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS buyer;
 DROP TABLE IF EXISTS unit;
 DROP TABLE IF EXISTS seller;
 DROP TABLE IF EXISTS variant;
-DROP TABLE IF EXISTS model;
+DROP TABLE IF EXISTS device_model;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS location;
 
@@ -21,7 +21,7 @@ CREATE TABLE product (
     brand VARCHAR(50) NOT NULL  -- Apple, Samsung, Google
 );
 
-CREATE TABLE model (
+CREATE TABLE device_model (
     mid   SERIAL PRIMARY KEY,
     pid   INT NOT NULL REFERENCES product(pid),
     name  VARCHAR(100) NOT NULL  -- "iPhone 17 Pro"
@@ -29,7 +29,7 @@ CREATE TABLE model (
 
 CREATE TABLE variant (
     vid     SERIAL PRIMARY KEY,
-    mid     INT NOT NULL REFERENCES model(mid),
+    mid     INT NOT NULL REFERENCES device_model(mid),
     SKU     VARCHAR(50),
     color   VARCHAR(50),         -- "Black"
     storage VARCHAR(20)          -- "256GB"
