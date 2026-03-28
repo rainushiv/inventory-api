@@ -2,6 +2,10 @@
 .env
 .venv
 /venv
+__pycache__/
+*.pyc
+
+# User
 project-practices-guide.md
 
 # OS
