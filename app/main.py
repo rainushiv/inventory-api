@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from routers import product
 from routers import unit 
-from routers import item 
+from InventoryBackend.app.routers import variant 
 from routers import model
+from routers import variant
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from db import lifespan
@@ -16,7 +17,7 @@ app = FastAPI(
 
 app.include_router(product.router)
 app.include_router(model.router)
-app.include_router(item.router)
+app.include_router(variant.router)
 app.include_router(unit.router)
 
 @app.get("/")

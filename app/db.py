@@ -5,8 +5,6 @@ import asyncpg
 import logging
 
 
-
-
 @asynccontextmanager 
 async def lifespan(app: FastAPI):
     app.state.pool = await asyncpg.create_pool(
