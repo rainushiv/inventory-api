@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 import os
 import asyncpg
+import logging
 
 
 

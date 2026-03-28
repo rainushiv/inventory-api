@@ -5,9 +5,7 @@ from routers import item
 from routers import model
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
-from app.db import lifespan
-import os
-import asyncpg
+from db import lifespan
 
 load_dotenv()
 
