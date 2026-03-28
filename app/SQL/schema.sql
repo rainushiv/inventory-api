@@ -47,6 +47,7 @@ CREATE TABLE unit (
     vid  INT NOT NULL REFERENCES variant(vid),
     lid  INT NOT NULL REFERENCES location(lid),
     sid  INT NOT NULL REFERENCES seller(sid),  -- where did this unit come from
+    cost NUMERIC(10,2) NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'available' -- 'sold','available','blacklisted'
 );
 
@@ -61,13 +62,13 @@ CREATE TABLE buyer (
 CREATE TABLE transaction (
     tid      SERIAL PRIMARY KEY,
     bid      INT NOT NULL REFERENCES buyer(bid),
-    price    NUMERIC(10, 2) NOT NULL,  -- total sale price
     sold_at  TIMESTAMP DEFAULT NOW()
 );
 
 -- Stores many to many relationship of transactions and the units sold 
 CREATE TABLE transaction_unit (
-    tid  INT NOT NULL REFERENCES transaction(tid),
-    uid  INT NOT NULL REFERENCES unit(uid),
+    tid     INT NOT NULL REFERENCES transaction(tid),
+    uid     INT NOT NULL REFERENCES unit(uid),
+    price   NUMERIC(10, 2) NOT NULL,  -- total sale price
     PRIMARY KEY (tid, uid)  -- composite PK, a unit can't appear twice in same transaction
 );
