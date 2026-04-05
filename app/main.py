@@ -5,9 +5,9 @@ from .routers import model
 from .routers import variant
 from contextlib import asynccontextmanager
 from dotenv import load_dotenv
+from .db import database 
 import logging
 from logging.handlers import RotatingFileHandler
-from .db import lifespan
 
 
 logging.basicConfig( 
@@ -27,6 +27,12 @@ logger.addHandler(rotate_file_handler)
 
 load_dotenv()
 
+@asynccontextmanager 
+async def lifespan(app: FastAPI):
+    await database.connect()
+    yield
+    await database.disconnect()
+
 
 app = FastAPI(
     title="InventoryBackend",
@@ -44,6 +50,6 @@ async def root():
 
 @app.get("/health")
 async def health():
-    async with app.state.pool.acquire() as conn:
+    async with database.pool.acquire() as conn:
         result = await conn.fetchval("SELECT 1")
     return {"db_connected": result == 1}
