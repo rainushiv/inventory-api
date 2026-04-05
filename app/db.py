@@ -36,7 +36,7 @@ class Database:
 
         logger.info("DB Connected!") 
     async def disconnect(self):
-        self.pool.close()
+        await self.pool.close()
 
 database = Database()
 

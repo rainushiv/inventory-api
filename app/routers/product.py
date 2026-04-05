@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from ..models.product import ProductCreate
+from ..db import database
 import logging
 router = APIRouter()
 logger = logging.getLogger("my_logger")
@@ -7,17 +8,18 @@ logger = logging.getLogger("my_logger")
 @router.get("/product", tags=["product"])
 async def get_products():
 
-    async with router.state.pool.acquire() as conn:
-        res = conn.fetch('''SELECT * FROM product''') 
-        logger.info(f"Called get products and retuned,{res}")
+    async with database.pool.acquire() as conn:
+        res = await conn.fetch('''SELECT * FROM product''') 
+        logger.info(f"Called get products and retuned,{res[:2]}...")
         print(res)
-    return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
+        
+    return [res]
 
 @router.post("/product", tags=["product"])
 async def add_product(product: ProductCreate):
-
-    async with router.state.pool.acquire() as conn:
-        conn.execute(f'''INSERT INTO product VALUES ({product.brand})''')
+    logger.info(f"Adding {product.brand} in to database as product")
+    async with database.pool.acquire() as conn:
+        await conn.execute("INSERT INTO product (brand) VALUES ($1)",product.brand)
 
     
     return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
