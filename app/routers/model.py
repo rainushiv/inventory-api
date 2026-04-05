@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 import logging
 router = APIRouter()
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("my_logger")
 @router.get("/model", tags=["model"])
 async def get_models():
-    logger.info("This model happened ")
+    logger.info("Called to get all models")
     return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
 
 @router.post("/model", tags=["model"])
