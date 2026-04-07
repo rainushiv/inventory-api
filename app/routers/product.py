@@ -11,9 +11,8 @@ async def get_products():
     async with database.pool.acquire() as conn:
         res = await conn.fetch('''SELECT * FROM product''') 
         logger.info(f"Called get products and retuned,{res[:2]}...")
-        print(res)
         
-    return [res]
+    return res
 
 @router.post("/product", tags=["product"])
 async def add_product(product: ProductCreate):

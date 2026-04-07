@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class DeviceModelCreate(BaseModel):
-    pid: int
+    pid: int # Product ID foreign Key
     name: str 
 
 
