@@ -7,6 +7,6 @@ __pycache__/
 
 # User
 project-practices-guide.md
-logs/
+logs
 # OS
 .DS_Store

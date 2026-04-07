@@ -5,6 +5,6 @@ class ProductCreate(BaseModel):
 
 
 class ProductResponse(BaseModel):
-    pid: int
+    pid: int # Product ID
     brand: str 
     
