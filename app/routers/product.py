@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from ..models.product import ProductCreate
+from fastapi import APIRouter,HTTPException
+from ..models.product import ProductCreate,ProductResponse
 from ..db import database
 import logging
 router = APIRouter()
@@ -13,16 +13,23 @@ async def get_products():
         logger.info(f"Called get products and retuned,{res[:2]}...")
         print(res)
         
-    return [res]
+    return res
 
 @router.post("/product", tags=["product"])
 async def add_product(product: ProductCreate):
-    logger.info(f"Adding {product.brand} in to database as product")
+    product.brand = product.brand.lower()
     async with database.pool.acquire() as conn:
-        await conn.execute("INSERT INTO product (brand) VALUES ($1)",product.brand)
+        data = await conn.fetchrow("SELECT * FROM product WHERE product.brand = $1",product.brand)
+        if data:
 
+            logger.error(f"Adding {product.brand} in to database as product, but it already exists")
+            raise HTTPException(status_code=409, detail="Product already exists") 
+
+        logger.info(f"Adding {product.brand} in to database as product")
+        res = await conn.fetchrow("INSERT INTO product (brand) VALUES ($1) RETURNING *",product.brand)
     
-    return [{"Iphone": "Iphone 13"},{"Samsung": "Samsung S22"}]
+    return res 
+
 
 @router.put("/product", tags=["product"])
 async def edit_product():
