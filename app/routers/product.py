@@ -15,14 +15,13 @@ async def get_products():
     return res
 
 @router.get("/product/{product_brand}", tags=["product"])
-async def get_products(product_brand: str ):
+async def get_product_by_brand(product_brand: str ):
 
     async with database.pool.acquire() as conn:
         res = await conn.fetch('''SELECT * FROM product WHERE product.brand = $1''',product_brand.lower()) 
         logger.info(f"Called get products and retuned,{res}...")
         
     return res
-
 
 
 @router.post("/product", tags=["product"])

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class VariantCreate(BaseModel):
-    mid: int
+    mid: int #Model ID Variant key
     SKU: str
     color: str 
     storage: str

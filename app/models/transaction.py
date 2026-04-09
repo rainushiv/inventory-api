@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class TransactionCreate(BaseModel):
-    bid: int
+    bid: int #Buyer ID Foregin Key
     price: float
     unit_ids: list[int]  # list of uids being sold in this transaction
 
