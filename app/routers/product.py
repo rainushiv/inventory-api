@@ -18,7 +18,7 @@ async def get_products():
 async def get_products(product_brand: str ):
 
     async with database.pool.acquire() as conn:
-        res = await conn.fetch('''SELECT * FROM product WHERE product.brand = $1''',product_brand) 
+        res = await conn.fetch('''SELECT * FROM product WHERE product.brand = $1''',product_brand.lower()) 
         logger.info(f"Called get products and retuned,{res}...")
         
     return res
@@ -41,20 +41,20 @@ async def add_product(product: ProductCreate):
     return res 
 
 
-@router.put("/product", tags=["product"])
-async def edit_product(product:ProductResponse):
+@router.put("/product/{product_ID}", tags=["product"])
+async def edit_product(product_ID:int, new_product_brand:ProductCreate):
 
-    # async with database.pool.acquire() as conn: 
+    async with database.pool.acquire() as conn: 
 
-    #     data = await conn.fetchrow("SELECT * FROM product WHERE product.pid = $1",product.pid)
-    #     if not data: 
-    #         logger.error(f"Editing {product.brand} in database, but it doesn't exists")
-    #         raise HTTPException(status_code=404, detail="Product doesnt exists") 
+        data = await conn.fetchrow("SELECT * FROM product WHERE product.pid = $1",product_ID)
+        if not data: 
+            logger.error(f"Editing {product_ID} in database, but it doesn't exists")
+            raise HTTPException(status_code=404, detail="Product doesnt exists") 
 
 
-    #     res = await conn.fetchrow("UPDATE Product SET product.brand = $1")
+        res = await conn.fetchrow("UPDATE Product SET brand = $1 WHERE pid = $2 RETURNING *",new_product_brand.brand.lower(),product_ID)
 
-    return [{"Iphone":"Iphone"}] 
+    return res 
 
 
 @router.delete("/product", tags=["product"])
