@@ -15,7 +15,7 @@ async def get_all_models():
     return res 
 
 @router.get("/model/{model_ID}", tags=["model"])
-async def get_model(model_ID:int):
+async def get_specific_model(model_ID:int):
     async with database.pool.acquire() as conn: 
 
         res = await conn.fetch("SELECT * FROM device_model WHERE model.mid = $1 RETURNING *",model_ID) 
