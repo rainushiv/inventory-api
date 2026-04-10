@@ -18,7 +18,7 @@ async def get_all_models():
 async def get_specific_model(model_ID:int):
     async with database.pool.acquire() as conn: 
 
-        res = await conn.fetch("SELECT * FROM device_model WHERE model.mid = $1 RETURNING *",model_ID) 
+        res = await conn.fetch("SELECT * FROM device_model WHERE mid = $1",model_ID) 
         logger.info(f"Called get model with ID: {model_ID} and retuned,{res}")
     return res 
 
@@ -29,7 +29,7 @@ async def add_model(model:DeviceModelCreate):
 
     async with database.pool.acquire() as conn: 
 
-        data = await conn.fetch("SELECT * FROM device_model WHERE model.pid = $1 or model.name = $2 RETURNING *",model.pid,model.name.lower()) 
+        data = await conn.fetch("SELECT * FROM device_model WHERE device_model.pid = $1 or device_model.name = $2 RETURNING *",model.pid,model.name.lower()) 
         if data: 
 
             logger.warning(f"Adding {model.name} in to database as model, but it already exists")
