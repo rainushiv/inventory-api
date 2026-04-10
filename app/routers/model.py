@@ -7,8 +7,8 @@ import logging
 router = APIRouter()
 logger = logging.getLogger("my_logger")
 
-@router.get("/model", tags=["model"])
-async def get_models():
+@router.get("/models", tags=["model"])
+async def get_all_models():
     async with database.pool.acquire() as conn: 
         res = await conn.fetch('''SELECT * FROM device_model''') 
         logger.info(f"Called get products and retuned,{res[:2]}...")
