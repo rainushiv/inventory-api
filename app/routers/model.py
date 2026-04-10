@@ -6,12 +6,23 @@ import logging
 
 router = APIRouter()
 logger = logging.getLogger("my_logger")
+
 @router.get("/model", tags=["model"])
 async def get_models():
     async with database.pool.acquire() as conn: 
         res = await conn.fetch('''SELECT * FROM device_model''') 
         logger.info(f"Called get products and retuned,{res[:2]}...")
     return res 
+
+@router.get("/model/{model_ID}", tags=["model"])
+async def get_model(model_ID:int):
+    async with database.pool.acquire() as conn: 
+
+        res = await conn.fetch("SELECT * FROM device_model WHERE model.mid = $1 RETURNING *",model_ID) 
+        logger.info(f"Called get model with ID: {model_ID} and retuned,{res}")
+    return res 
+
+
 
 @router.post("/model", tags=["model"])
 async def add_model(model:DeviceModelCreate):
