@@ -29,7 +29,7 @@ async def add_model(model:DeviceModelCreate):
 
     async with database.pool.acquire() as conn: 
 
-        data = await conn.fetch("SELECT * FROM device_model WHERE device_model.pid = $1 or device_model.name = $2 RETURNING *",model.pid,model.name.lower()) 
+        data = await conn.fetch("SELECT * FROM device_model WHERE device_model.pid = $1 or device_model.name = $2",model.pid,model.name.lower()) 
         if data: 
 
             logger.warning(f"Adding {model.name} in to database as model, but it already exists")
