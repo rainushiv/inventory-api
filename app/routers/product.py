@@ -31,7 +31,7 @@ async def add_product(product: ProductCreate):
         data = await conn.fetchrow("SELECT * FROM product WHERE product.brand = $1",product.brand)
         if data:
 
-            logger.error(f"Adding {product.brand} in to database as product, but it already exists")
+            logger.warning(f"Adding {product.brand} in to database as product, but it already exists")
             raise HTTPException(status_code=409, detail="Product already exists") 
 
         logger.info(f"Adding {product.brand} in to database as product")
