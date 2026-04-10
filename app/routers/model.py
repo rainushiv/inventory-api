@@ -49,7 +49,7 @@ async def edit_model(model_ID:int, new_model_name:DeviceModelCreate):
             raise HTTPException(status_code=404, detail="Model doesnt exists") 
 
 
-        res = await conn.fetchrow("UPDATE device_model SET name = $1 WHERE mid = $2 RETURNING *",new_model_name.lower(),model_ID)
+        res = await conn.fetchrow("UPDATE device_model SET name = $1 WHERE mid = $2 RETURNING *",new_model_name.name.lower(),model_ID)
 
     return res 
 
